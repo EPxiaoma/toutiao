@@ -19,20 +19,20 @@
 ## 1-3 项目结构
 
 ```
-toutiao_backend/                          # 项目根目录
-├── crud/                              # 数据访问层（CRUD操作）
+toutiao_backend/                     # 项目根目录
+├── crud/                            # 数据访问层（CRUD操作）
 │   ├── favorite.py                  # 收藏相关数据库操作
 │   ├── history.py                   # 历史记录相关数据库操作
 │   ├── news.py                      # 新闻相关数据库操作
 │   └── users.py                     # 用户相关数据库操作
 │
-├── models/                            # 数据模型定义
+├── models/                          # 数据模型定义
 │   ├── favorite.py                  # 收藏数据模型
 │   ├── history.py                   # 历史记录数据模型
 │   ├── news.py                      # 新闻数据模型
 │   └── users.py                     # 用户数据模型
 │
-├── routers/                           # API路由定义
+├── routers/                         # API路由定义
 │   ├── favorite.py                  # 收藏相关API路由
 │   ├── history.py                   # 历史记录相关API路由
 │   ├── news.py                      # 新闻相关API路由
@@ -44,14 +44,14 @@ toutiao_backend/                          # 项目根目录
 │   ├── news.py                      # 新闻数据验证模型
 │   └── users.py                     # 用户数据验证模型
 │
-├── utils/                             # 工具函数目录
+├── utils/                           # 工具函数目录
 │
-├── config/                             # 配置相关
-│   ├── db_conf.py                    # 数据库配置文件
-│   ├── cache_conf.py                 # Redis缓存配置
+├── config/                          # 配置相关
+│   ├── db_conf.py                   # 数据库配置文件
+│   ├── cache_conf.py                # Redis缓存配置
 │
-├── main.py                           # 应用入口文件
-└── test_main.http                    # HTTP接口测试文件
+├── main.py                          # 应用入口文件
+└── test_main.http                   # HTTP接口测试文件
 ```
 
 ## 1-4 功能模块
