@@ -10,8 +10,8 @@ from utils import security
 
 # 根据数据名查询数据库
 async def get_user_by_username(db: AsyncSession, username: str):
-    stmt = select(User).where(User.username == username)
-    result = await db.execute(stmt)
+    query = select(User).where(User.username == username)
+    result = await db.execute(query)
     return result.scalar_one_or_none()
 
 # 创建用户

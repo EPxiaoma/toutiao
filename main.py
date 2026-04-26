@@ -1,7 +1,14 @@
 from fastapi import FastAPI
 from routers import news, users
 from fastapi.middleware.cors import CORSMiddleware
+
+from routers.users import register
+from utils.exception_handlers import register_exception_handlers
+
 app = FastAPI()
+
+# 注册异常处理器
+register_exception_handlers(app)
 
 # 允许的来源（可以是域名列表）
 origins = [
