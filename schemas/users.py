@@ -3,7 +3,7 @@ from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
 from uvicorn import Config
 
-
+# 用户数据模型
 class UserRequest(BaseModel):
     username: str
     password: str
