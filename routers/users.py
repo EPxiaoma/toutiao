@@ -4,10 +4,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from crud import users
+from models.users import User
 from schemas.users import UserRequest, UserAuthResponse, UserInfoResponse
 
 from config.db_conf import get_db
 from utils.response import success_response
+from utils.auth import get_current_user
 
 router = APIRouter(prefix="/api/user", tags=["users"])
 
@@ -45,3 +47,9 @@ async def login(user_data: UserRequest, db: AsyncSession = Depends(get_db)):
     token = await users.create_token(db, user.id)
     response_data = UserAuthResponse(token=token, user_info=UserInfoResponse.model_validate(user))
     return success_response(message="登录成功", data=response_data)
+
+# 获取用户信息
+@router.get("/info")
+async def get_user_info(user: User = Depends(get_current_user)):
+    # 查 Token、查用户 -> 封装 crud -> 功能整合成一个工具函数 -> 路由导入使用：依赖注入
+    return success_response(message="获取用户信息成功", data=UserInfoResponse.model_validate(user))
