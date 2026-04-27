@@ -1,6 +1,8 @@
+from asyncio.windows_events import NULL
 
-from fastapi import APIRouter, Query, Depends
+from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 
 from config.db_conf import get_db
 from crud import favorite
@@ -23,3 +25,11 @@ async def check_favorite(news_id: int = Query(..., alias="newsId"), user: User =
 async def add_favorite(data: FavoriteAddRequest, user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
     result = await favorite.add_news_favorite(db, user.id, data.news_id)
     return success_response(message="添加收藏成功", data=result)
+
+# 取消收藏
+@router.delete("/remove")
+async def remove_favorite(news_id: int = Query(..., alias="newsId"), user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    result = await favorite.remove_news_favorite(db, user.id, news_id)
+    if not result:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="收藏记录不存在")
+    return success_response(message="取消收藏成功")
