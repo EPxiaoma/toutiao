@@ -1,15 +1,30 @@
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy import select, func, update
 from sqlalchemy.engine import result
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from cache.news_cache import get_cache_categories, set_cache_categories
 from models.news import Category, News
 
 
 # 获取新闻分类
 async def get_categories(db: AsyncSession, skip: int=0, limit: int=100):
+    # 先尝试从缓存中获取数据
+    cache_categories = await get_cache_categories()
+    if cache_categories:
+        return cache_categories
+
     stmt = select(Category).offset(skip).limit(limit)
     result = await db.execute(stmt)
-    return result.scalars().all()
+    categories = result.scalars().all() # ORM 类型数据
+
+    # 写入缓存
+    if categories:
+        categories = jsonable_encoder(categories)
+        await set_cache_categories(categories)
+
+    # 返回数据
+    return categories
 
 # 获取新闻列表
 async def get_new_list(db: AsyncSession, category_id: int, skip: int=0, limit: int = 10):

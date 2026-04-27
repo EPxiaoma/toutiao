@@ -1,7 +1,7 @@
 from typing import Any
 
 import redis.asyncio as redis
-from pydantic import json
+import json
 
 REDIS_HOST = "192.168.163.164"
 REDIS_PORT = 6379
@@ -42,8 +42,8 @@ async def set_cache(key: str, value: Any, expire: int = 3600):
     try:
         if isinstance(value, (dict, list)):
             # 将字典或列表转换为 JSON 字符串
-            value = json.dumps(value, ensure_ascill=False) # 中文正常保存
-        await redis_client.set(key, expire, value)
+            value = json.dumps(value,  ensure_ascii=False) # 中文正常保存
+        await redis_client.set(key, value, ex=expire)
         return True
     except Exception as e:
         print(f"设置缓存失败: {e}")
