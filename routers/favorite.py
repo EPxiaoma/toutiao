@@ -63,3 +63,12 @@ async def get_favorite_list(
     has_more = total > page * page_size
     data = FavoriteListResponse(list=favorite_list, total=total, hasMore=has_more)
     return success_response(message="获取收藏列表成功", data=data)
+
+# 清空收藏列表
+@router.delete("/clear")
+async def clear_favorite(
+        user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db)
+):
+    count = await favorite.remove_all_favorites(db, user.id)
+    return success_response(message=f"清空了{count}条记录")
