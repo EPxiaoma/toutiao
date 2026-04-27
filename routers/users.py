@@ -5,7 +5,7 @@ from starlette import status
 
 from crud import users
 from models.users import User
-from schemas.users import UserRequest, UserAuthResponse, UserInfoResponse
+from schemas.users import UserRequest, UserAuthResponse, UserInfoResponse, UserUpdateRequest
 
 from config.db_conf import get_db
 from utils.response import success_response
@@ -53,3 +53,10 @@ async def login(user_data: UserRequest, db: AsyncSession = Depends(get_db)):
 async def get_user_info(user: User = Depends(get_current_user)):
     # 查 Token、查用户 -> 封装 crud -> 功能整合成一个工具函数 -> 路由导入使用：依赖注入
     return success_response(message="获取用户信息成功", data=UserInfoResponse.model_validate(user))
+
+# 修改用户信息
+@router.put("/update")
+async def update_user_info(user_data: UserUpdateRequest ,user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    # 验证 Token —> 更新（用户输入数据 put 提交 -> 请求体参数 -> 定义 pydantic 模型类） -> 响应结果
+    user = await users.update_user(db, user.username, user_data)
+    return success_response(message="修改用户信息成功", data=UserInfoResponse.model_validate(user))

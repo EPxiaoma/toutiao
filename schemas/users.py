@@ -38,3 +38,11 @@ class UserAuthResponse(BaseModel):
         populate_by_name=True,  # alias / 字段名兼容
         from_attributes=True    # 允许 ORM 对象属性中取值
     )
+
+# 更新用户信息的模型类
+class UserUpdateRequest(BaseModel):
+    nickname: str = None
+    avatar: str = None
+    gender: str = None
+    bio: str = None
+    phone: str = None

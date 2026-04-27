@@ -11,7 +11,7 @@ async def get_current_user(
         db: AsyncSession = Depends(get_db),
         authorization: str = Header(..., alias="Authorization"),
 ):
-    # Bearer xxxx
+    # Bearer xxxx 
     token = authorization.replace("Bearer ", "")
     user = await users.get_user_by_token(db, token)
     if not user:
