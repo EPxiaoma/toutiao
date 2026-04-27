@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 
 from fastapi import APIRouter, Query, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
