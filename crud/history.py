@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import select, func
+from sqlalchemy import select, func, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models.history import History
@@ -40,3 +40,11 @@ async def get_history_list(db: AsyncSession, user_id: int, page: int = 1, page_s
     result = await db.execute(query)
     rows = result.all()
     return rows, total
+
+# 删除单条浏览历史
+async def delete_history(db: AsyncSession, user_id: int, news_id: int):
+    query = delete(History).where(History.user_id == user_id, History.news_id == news_id)
+    result = await db.execute(query)
+    await db.commit()
+
+    return result.rowcount > 0
